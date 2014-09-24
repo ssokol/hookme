@@ -149,10 +149,10 @@ chatbot.getToken = function(endpointId, callback) {
 };
 
 // set the appId for the respoke object
-respoke.appId = "9d6d4abf-b1e2-4d8e-b553-be9f68bbb824";
+respoke.appId = "INSERT YOUR APP ID HERE";
 
 // set the appSecret for the respoke object
-respoke.appSecret = "f227b781-ed3f-4122-96e6-993d958c952e";
+respoke.appSecret = "INSERT YOUR APP SECRET HERE";
 
 // create a websocket connection for sending individual messages
 respoke.createWebsocket();
