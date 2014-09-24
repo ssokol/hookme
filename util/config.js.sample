@@ -1,0 +1,5 @@
+var settings = {};
+settings.appId = "INSERT YOUR APP ID HERE";
+settings.appSecret = "INSERT YOUR APP SECRET HERE";
+
+module.exports = settings;

@@ -148,12 +148,6 @@ chatbot.getToken = function(endpointId, callback) {
   respoke.getToken(endpointId, callback);
 };
 
-// set the appId for the respoke object
-respoke.appId = "INSERT YOUR APP ID HERE";
-
-// set the appSecret for the respoke object
-respoke.appSecret = "INSERT YOUR APP SECRET HERE";
-
 // create a websocket connection for sending individual messages
 respoke.createWebsocket();
 

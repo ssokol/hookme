@@ -1,11 +1,14 @@
 var request = require('request');
 var wsClient = require('../util/wsclient');
+var config = require('../util/config');
+
 var clientSocket = null;
+var baseUrl = config.baseUrl || "https://api-st.respoke.io";
 
 var respoke = {};
 
-respoke.appSecret = null;
-respoke.appId = null;
+respoke.appSecret = config.appSecret;
+respoke.appId = config.appId;
 
 var genericHandler = function(err, req, body) {
   if (err) {
@@ -19,11 +22,12 @@ respoke.getToken = function(endpointId, callback) {
   var body = {
     "appId": respoke.appId,
     "endpointId": endpointId,
+    "roleId": "visitor",
     "ttl": 86400
   };
 
   request.post({
-    'url': 'https://api-st.respoke.io/v1/tokens',
+    'url': baseUrl + '/v1/tokens',
     'headers': {'App-Secret': respoke.appSecret},
     'body': JSON.stringify(body)
   }, callback);
@@ -37,7 +41,7 @@ respoke.sendGroupMessage = function (group, message, callback) {
       clientSocket.sendGroupMessage(group, message, handler);
     } else {
       request.post({
-        'url': 'https://api-st.respoke.io/v1/channels/' + group + '/publish',
+        'url': baseUrl + '/v1/channels/' + group + '/publish',
         'headers': {'App-Secret': respoke.appSecret},
         'body': JSON.stringify({"message": message})
       }, handler);
@@ -59,7 +63,7 @@ respoke.sendMessage = function (endpoint, message, callback) {
 respoke.getConnections = function (endpoint, callback) {
   var handler = callback || genericHandler;
   request.get({
-    'url': 'https://api-st.respoke.io/v1/apps/' + respoke.appId + '/endpoints/' + endpoint + '/connections',
+    'url': baseUrl + '/v1/apps/' + respoke.appId + '/endpoints/' + endpoint + '/connections',
     'headers': {'App-Secret': respoke.appSecret}
   }, handler);
 };
@@ -68,7 +72,7 @@ respoke.getConnections = function (endpoint, callback) {
 respoke.joinGroup = function (endpoint, connection, groups, callback) {
   var handler = callback || genericHandler;
   request.put({
-    'url': 'https://api-st.respoke.io/v1/apps/' + respoke.appId + '/endpoints/' + endpoint + '/connections/' + connection,
+    'url': baseUrl + '/v1/apps/' + respoke.appId + '/endpoints/' + endpoint + '/connections/' + connection,
     'headers': {'App-Secret': respoke.appSecret},
     'body': JSON.stringify({"groups": groups})
   }, handler); 
@@ -78,14 +82,14 @@ respoke.joinGroup = function (endpoint, connection, groups, callback) {
 respoke.getMembers = function (group, callback) {
   var handler = callback || genericHandler;
   request.get({
-    'url': 'https://api-st.respoke.io/v1/channels/' + group + '/subscribers/',
+    'url': baseUrl + '/v1/channels/' + group + '/subscribers/',
     'headers': {'App-Secret': respoke.appSecret}
   }, handler);
 };
 
 // create a websocket connection
 respoke.createWebsocket = function() {
-  wsClient.getSocketConnection("https://api-st.respoke.io", respoke.appSecret, "appSecret", function(err, socket) {
+  wsClient.getSocketConnection(baseUrl, respoke.appSecret, "appSecret", function(err, socket) {
     if (err) {
       console.log(err);
     } else {
