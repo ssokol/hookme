@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+	<title>Respoke WebHook Sample Client</title>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+</head>
+<body>
+<div id="login">
+    <table>
+        <tr>
+            <td>Log in as:</td>
+            <td><input type="text" id="endpoint" /></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+                <input type="button" value="Log In" id="connect" />
+                <input type="button" value="Log Out" id="disconnect" />
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="modal">
+    <div id="incoming">
+        <div id="from">Incoming call from <span id="fromName">Foo</span></div>
+        <div id="actions">
+            <input type="button" value="Answer" id="answerButton" />
+            <input type="button" value="Ignore" id="ignoreButton" />
+        </div>
+    </div>
+</div>
+<div id="makeCalls">
+    Call Controls...
+    <table>
+        <tr>
+            <td>Place a call or send a message to:</td>
+            <td><input type="text" value="" id="epToCall" /></td>
+        </tr>
+        <tr>
+            <td>Message:</td>
+            <td><div id="messageBox"></div></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type="text" id="messageText"></input></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>
+                <input type="button" value="Call" id="callButton" />
+                <input type="button" value="Hangup" id="hangupButton" />
+                <input type="button" value="Message" id="messageButton" />
+                <input type="button" value="Counter" id="counterButton" />
+            </td>
+        </tr>
+    </table>
+</div>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="http://cdn-st.respoke.io/respoke.min.js"></script>
+<script src="/javascripts/code.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#disconnect {
+    display: none;
+}
+
+#makeCalls {
+    display: none;
+}
+
+#hangupButton {
+    display: none;
+}
+
+.modal {
+    display: none;
+    position: absolute;
+    z-index: 95;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #c7c7c7;
+}
+
+#incoming {
+    position: absolute;
+    z-index: 99;
+    width: 300px;
+    height: 100px;
+    left: 200px;
+    top: 100px;
+    border: 1px solid black;
+    text-align: center;
+    padding-top: 30px;
+    background-color: white;
+}
+
+#actions {
+    margin-top: 20px;
+}
+
+#messageBox {
+    border: 1px solid black;
+    font-family: arial;
+    font-size: 11px;
+    width: 502px;
+    height: 202px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+#messageText {
+    width: 500px;
+}
+
+.message {
+    font-size: 12px;
+    margin: 5px;
+}
+
+.local {
+    text-align: right;
+}
