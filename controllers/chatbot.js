@@ -1,3 +1,4 @@
+var debug = require('debug')('chatbot');
 var respoke = require('../api/respoke');
 
 var chatbot = {};
@@ -6,16 +7,22 @@ var connectionId = null;
 
 
 function handleApplicationConnections(err, req, body) {
-  if (err) console.log(err);
+  if (err) debug(err);
   
   if (!body) {
-    console.log("no body!");
+    debug("application connections aint got no body!");
     return;
-  } else {
-    console.log(body);
+  }
+  else {
+    debug('application connections body', body);
   }
   var data = JSON.parse(body);
-  connectionId = data[0].id;
+  if (data.length) {
+    connectionId = data[0].id;
+  }
+  else {
+    debug('no connections right now');
+  }
   respoke.joinGroup('application', connectionId, ['robot'], handleJoinGroups);
 }
 
@@ -39,13 +46,13 @@ var events = {
 
   // endpoint message sent to the webhook endpoint ("application" in this case)
   "message": function (data) {
-    console.log('message from ' + data.header.from + ': ' + data.body);
+    debug('message from ' + data.header.from + ': ' + data.body);
   },
   
   // Process group messages
   "pubsub": function (data) {
     
-    console.log("group message on " + data.header.channel + " from " + data.header.from + ": " + data.message);
+    debug("group message on " + data.header.channel + " from " + data.header.from + ": " + data.message);
     
     // ignore any system messages
     if (data.header.from === "__SYSTEM__") return;
@@ -63,7 +70,7 @@ var events = {
       for (var i = 0; i < group.length; i++) {
         var message = group[i];
         var output = message.from + ": " + message.body;
-        console.log(output);
+        debug(output);
         respoke.sendMessage(data.header.from, output);
       }
       
@@ -89,26 +96,26 @@ var events = {
   
   // system event - a new connection was established
   "endpointConnect": function (data) {
-    console.log('connect from: ' + data.endpointId);
+    debug('connect from: ' + data.endpointId);
     respoke.sendGroupMessage("people", data.endpointId + " just logged on.");
   },
   
   // system event - a connection terminated
   "endpointDisconnect": function (data) {
-    console.log('disconnect from ' + data.endpointId);
+    debug('disconnect from ' + data.endpointId);
     respoke.sendGroupMessage("people", data.endpointId + " just logged off.");
   },
   
   // system event - a connection joined a group
   "groupJoined": function (data) {
-    console.log("event: " + data.endpointId + ' joined ' + data.group);
+    debug("event: " + data.endpointId + ' joined ' + data.group);
     
     // send the last 50 messages to the newly joined participant
   },
   
   // system event - a connection left a group
   "groupLeft": function (data) {
-    console.log("event: " + data.endpointId + ' left ' + data.group);
+    debug("event: " + data.endpointId + ' left ' + data.group);
   },
   "join": function (data) {},
   "leave": function (data) {}
@@ -116,7 +123,7 @@ var events = {
 
 // the "process" method called by the express POST handler
 chatbot.process = function (req) {
-  console.log('--------------------------------------------------------------------------------');
+  debug('--------------------------------------------------------------------------------');
 
   try {
     // the event arrives in the request body
@@ -134,13 +141,13 @@ chatbot.process = function (req) {
       } else {
       
         // otherwise log unrecognized events
-        console.log("Unrecognized Event:");
+        debug("Unrecognized Event:");
         console.dir(data);
       
       }
     }
   } catch(e) {
-    console.log("Error!: " + e);
+    debug("Error!: " + e);
   }
 }
 

@@ -1,6 +1,6 @@
+var client;
 var call = null;
 var endpoint = null;
-var appId = "9d6d4abf-b1e2-4d8e-b553-be9f68bbb824";
 var callTimer = null;
 var e = null;
 
@@ -235,7 +235,7 @@ $("#connect").click(function() {
     // get a token from the server
     $.post("/token/", {'endpointId': epid}).done(function(data){
       data = JSON.parse(data);
-console.dir(data);
+      console.dir(data);
       // use the token to connect the client to respoke
       client.connect({
         token: data.tokenId,
@@ -251,12 +251,17 @@ $("#disconnect").click(function() {
     client.disconnect(); 
 });
 
-var client = new respoke.createClient({
-    appId: appId,
-    baseURL: "https://api-st.respoke.io",
-    //developmentMode: true
+
+$.get('/settings', function (config) {
+
+    client = respoke.createClient({
+        appId: config.appId,
+        baseUrl: config.baseUrl,
+        //developmentMode: true
+    });
+
+    client.listen("message", onMessage);
 });
 
-client.listen("message", onMessage);
 
 // fetch a token from the server

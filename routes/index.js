@@ -1,11 +1,19 @@
 var express = require('express');
 var chatbot = require('../controllers/chatbot');
+var config = require('../util/config');
 
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res) {
+router.get('/', function (req, res) {
   //res.render('index', { title: 'Express' });
+});
+
+router.get('/settings', function (req, res) {
+	res.send({ 
+		appId: config.appId,
+		baseUrl: config.baseURL
+	});
 });
 
 router.post('/token', function(req, res) {

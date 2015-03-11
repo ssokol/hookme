@@ -1,3 +1,4 @@
+var debug = require('debug')('api-respoke');
 var request = require('request');
 var wsClient = require('../util/wsclient');
 var config = require('../util/config');
@@ -12,7 +13,7 @@ respoke.appId = config.appId;
 
 var genericHandler = function(err, req, body) {
   if (err) {
-    console.log(err);
+    debug(err);
   }
 };
 
@@ -91,10 +92,10 @@ respoke.getMembers = function (group, callback) {
 respoke.createWebsocket = function() {
   wsClient.getSocketConnection(baseUrl, respoke.appSecret, "appSecret", function(err, socket) {
     if (err) {
-      console.log(err);
+      debug(err);
     } else {
       clientSocket = socket;
-      console.log("Application-level WebSocket connection established to Respoke.");
+      debug("Application-level WebSocket connection established to Respoke.");
     }
   });
 };
